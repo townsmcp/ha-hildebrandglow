@@ -17,6 +17,7 @@ class Meter:
             OFF = "00"
             ARMED = "01"
             ON = "02"
+            DISARMED = "FF"
 
         current_summation_delivered: Optional[int]
         """Import energy usage"""
@@ -200,7 +201,7 @@ class Meter:
         def __init__(self, payload: Dict[str, Any]):
             """Parse alternative historical meter readings from the received payload."""
             alternative_historical_consumption = (
-                payload["0702"]["0C"] if "0C" in payload["0702"] else {}
+                payload["0702"]["0C"] if "0C" in payload["0702"] else {payload["0702"]["04"] if "04" in payload["0702"]}
             )
 
             self.current_day_consumption_delivered = (
